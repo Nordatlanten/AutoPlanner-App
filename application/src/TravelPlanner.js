@@ -66,13 +66,9 @@ export default function TravelPlanner(props) {
     )
   }
 
-  //api.vasttrafik.se/bin/rest.exe/v2/trip?originId=Kungsbacka+station%2C+Kungsbacka&destId=Swedenborgsplatsen%2C+G%C3%B6teborg&numTrips=10&format=json
-
   return (
     <View style={styles.container}>
-
-
-      <View >
+      <View>
         <Modal
           animationType="slide"
           transparent={true}
@@ -84,7 +80,7 @@ export default function TravelPlanner(props) {
                 style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}
               >
                 Möjliga resalternativ
-            </Text>
+              </Text>
 
               <Grid style={styles.tableBorder}>
                 <Row
@@ -214,19 +210,19 @@ export default function TravelPlanner(props) {
 
             console.log(
               "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" +
-              trip.departure +
-              "&destId=" +
-              trip.destination +
-              "&numTrips=10&format=json"
+                trip.departure +
+                "&destId=" +
+                trip.destination +
+                "&numTrips=10&format=json"
             )
 
             if (values.departure != "" && values.destination != "") {
               fetch(
                 "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" +
-                trip.departure +
-                "&destId=" +
-                trip.destination +
-                "&numTrips=10&format=json",
+                  trip.departure +
+                  "&destId=" +
+                  trip.destination +
+                  "&numTrips=10&format=json",
 
                 {
                   method: "GET",
@@ -239,7 +235,6 @@ export default function TravelPlanner(props) {
                 .then((response) => response.json())
                 .then((res) => {
                   let tripList = res.TripList.Trip.map((trip) => {
-                    // console.log(trip)
                     let fixedTrip = trip
                     if (!Array.isArray(trip.Leg)) {
                       fixedTrip.Leg = [trip.Leg]
@@ -268,8 +263,8 @@ export default function TravelPlanner(props) {
                       setDepartures([])
                       fetch(
                         "https://api.vasttrafik.se/bin/rest.exe/v2/location.name?input=" +
-                        values.departure +
-                        "&format=json",
+                          values.departure +
+                          "&format=json",
                         {
                           method: "GET",
                           headers: {
@@ -316,8 +311,8 @@ export default function TravelPlanner(props) {
 
                     fetch(
                       "https://api.vasttrafik.se/bin/rest.exe/v2/location.name?input=" +
-                      values.destination +
-                      "&format=json",
+                        values.destination +
+                        "&format=json",
                       {
                         method: "GET",
                         headers: {
@@ -365,7 +360,6 @@ export default function TravelPlanner(props) {
         </Formik>
       </View>
     </View>
-
   )
 }
 
@@ -438,8 +432,7 @@ const styles = StyleSheet.create({
   tableItems: {
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 25
-
+    marginHorizontal: 25,
   },
   tableBorder: {
     borderRadius: 20,
