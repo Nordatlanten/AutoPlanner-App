@@ -70,87 +70,36 @@ export default function TravelPlanner(props) {
 
   return (
     <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={(modalVisible, resultsReady)}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text
-              style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}
-            >
-              Möjliga resalternativ
+
+
+      <View >
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={(modalVisible, resultsReady)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text
+                style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}
+              >
+                Möjliga resalternativ
             </Text>
 
-            <Grid style={styles.tableBorder}>
-              <Row
-                style={{
-                  backgroundColor: "#4c86aa",
-                  padding: 10,
-                  maxHeight: "20%",
-                }}
-              >
-                <Col>
-                  <Text style={{ color: "#fff" }}>Antal byten:</Text>
-                </Col>
-
-                <Col>
-                  <Text style={{ color: "#fff" }}>Restid:</Text>
-                </Col>
-                <Col>
-                  <Text style={{ color: "#fff" }}>Avgång:</Text>
-                </Col>
-                <Col>
-                  <Text style={{ color: "#fff" }}>Ankomst:</Text>
-                </Col>
-              </Row>
-
-              {tripResult.map((trip, i) => {
-                return (
-                  <Col
-                    key={i}
-                    style={styles.tableContainer}
-                    onPress={() => {
-                      setClickedTrip(trip.Leg)
-                      if (showTripDetails === false) {
-                        setShowTripDetails(true)
-                      }
-                    }}
-                  >
-                    <Row style={styles.tableItems}>
-                      <Text>{trip.Leg.length} </Text>
-                      <Text>
-                        {getTravelTime(
-                          trip.Leg[0].Origin,
-                          trip.Leg[trip.Leg.length - 1].Destination
-                        ) + "min"}
-                      </Text>
-                      <Text>{trip.Leg[0].Origin.time}</Text>
-                      <Text>
-                        {trip.Leg[trip.Leg.length - 1].Destination.time}
-                      </Text>
-                    </Row>
-                  </Col>
-                )
-              })}
-            </Grid>
-
-            {showTripDetails && (
               <Grid style={styles.tableBorder}>
                 <Row
                   style={{
                     backgroundColor: "#4c86aa",
                     padding: 10,
-                    maxHeight: "18%",
+                    maxHeight: "20%",
                   }}
                 >
                   <Col>
-                    <Text style={{ color: "#fff" }}>Resdel: </Text>
+                    <Text style={{ color: "#fff" }}>Antal byten:</Text>
                   </Col>
 
                   <Col>
-                    <Text style={{ color: "#fff" }}>Färdsätt: </Text>
+                    <Text style={{ color: "#fff" }}>Restid:</Text>
                   </Col>
                   <Col>
                     <Text style={{ color: "#fff" }}>Avgång:</Text>
@@ -160,113 +109,215 @@ export default function TravelPlanner(props) {
                   </Col>
                 </Row>
 
-                {clickedTrip &&
-                  clickedTrip.map((trip, i) => {
-                    return (
-                      <Col key={i} style={styles.tableContainer}>
-                        <Row style={styles.tableItems}>
-                          <Text>{i + 1} </Text>
-                          <Text>{trip.name}</Text>
-                          <Text>{trip.Origin.time}</Text>
-                          <Text>{trip.Destination.time}</Text>
-                        </Row>
-                      </Col>
-                    )
-                  })}
+                {tripResult.map((trip, i) => {
+                  return (
+                    <Col
+                      key={i}
+                      style={styles.tableContainer}
+                      onPress={() => {
+                        setClickedTrip(trip.Leg)
+                        if (showTripDetails === false) {
+                          setShowTripDetails(true)
+                        }
+                      }}
+                    >
+                      <Row style={styles.tableItems}>
+                        <Text>{trip.Leg.length} </Text>
+                        <Text>
+                          {getTravelTime(
+                            trip.Leg[0].Origin,
+                            trip.Leg[trip.Leg.length - 1].Destination
+                          ) + "min"}
+                        </Text>
+                        <Text>{trip.Leg[0].Origin.time}</Text>
+                        <Text>
+                          {trip.Leg[trip.Leg.length - 1].Destination.time}
+                        </Text>
+                      </Row>
+                    </Col>
+                  )
+                })}
               </Grid>
-            )}
 
-            <TouchableHighlight
-              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-              onPress={() => {
-                setModalVisible(!modalVisible)
-                setResultsReady(!resultsReady)
-              }}
-            >
-              <Text style={styles.textStyle}>Stäng</Text>
-            </TouchableHighlight>
+              {showTripDetails && (
+                <Grid style={styles.tableBorder}>
+                  <Row
+                    style={{
+                      backgroundColor: "#4c86aa",
+                      padding: 10,
+                      maxHeight: "18%",
+                    }}
+                  >
+                    <Col>
+                      <Text style={{ color: "#fff" }}>Resdel: </Text>
+                    </Col>
+
+                    <Col>
+                      <Text style={{ color: "#fff" }}>Färdsätt: </Text>
+                    </Col>
+                    <Col>
+                      <Text style={{ color: "#fff" }}>Avgång:</Text>
+                    </Col>
+                    <Col>
+                      <Text style={{ color: "#fff" }}>Ankomst:</Text>
+                    </Col>
+                  </Row>
+
+                  {clickedTrip &&
+                    clickedTrip.map((trip, i) => {
+                      return (
+                        <Col key={i} style={styles.tableContainer}>
+                          <Row style={styles.tableItems}>
+                            <Text>{i + 1} </Text>
+                            <Text>{trip.name}</Text>
+                            <Text>{trip.Origin.time}</Text>
+                            <Text>{trip.Destination.time}</Text>
+                          </Row>
+                        </Col>
+                      )
+                    })}
+                </Grid>
+              )}
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible)
+                  setResultsReady(!resultsReady)
+                }}
+              >
+                <Text style={styles.textStyle}>Stäng</Text>
+              </TouchableHighlight>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      <Formik
-        initialValues={{ departure: "", destination: "" }}
-        onSubmit={(values) => {
-          console.log(values)
-          setClickedTrip([])
-          setShowTripDetails(false)
+        <Formik
+          initialValues={{ departure: "", destination: "" }}
+          onSubmit={(values) => {
+            console.log(values)
+            setClickedTrip([])
+            setShowTripDetails(false)
 
-          let trip = {
-            departure: encodeURIComponent(
-              encodeURIComponent(values.departure)
-                .replace("(", "%28")
-                .replace(")", "%29")
-            ),
-            destination: encodeURIComponent(
-              encodeURIComponent(values.destination)
-                .replace("(", "%28")
-                .replace(")", "%29")
-            ),
-          }
+            let trip = {
+              departure: encodeURIComponent(
+                encodeURIComponent(values.departure)
+                  .replace("(", "%28")
+                  .replace(")", "%29")
+              ),
+              destination: encodeURIComponent(
+                encodeURIComponent(values.destination)
+                  .replace("(", "%28")
+                  .replace(")", "%29")
+              ),
+            }
 
-          console.log(
-            "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" +
+            console.log(
+              "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" +
               trip.departure +
               "&destId=" +
               trip.destination +
               "&numTrips=10&format=json"
-          )
+            )
 
-          if (values.departure != "" && values.destination != "") {
-            fetch(
-              "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" +
+            if (values.departure != "" && values.destination != "") {
+              fetch(
+                "https://api.vasttrafik.se/bin/rest.exe/v2/trip?originId=" +
                 trip.departure +
                 "&destId=" +
                 trip.destination +
                 "&numTrips=10&format=json",
 
-              {
-                method: "GET",
+                {
+                  method: "GET",
 
-                headers: {
-                  Authorization: "Bearer " + token,
-                },
-              }
-            )
-              .then((response) => response.json())
-              .then((res) => {
-                let tripList = res.TripList.Trip.map((trip) => {
-                  // console.log(trip)
-                  let fixedTrip = trip
-                  if (!Array.isArray(trip.Leg)) {
-                    fixedTrip.Leg = [trip.Leg]
-                    return fixedTrip
-                  } else {
-                    return fixedTrip
-                  }
+                  headers: {
+                    Authorization: "Bearer " + token,
+                  },
+                }
+              )
+                .then((response) => response.json())
+                .then((res) => {
+                  let tripList = res.TripList.Trip.map((trip) => {
+                    // console.log(trip)
+                    let fixedTrip = trip
+                    if (!Array.isArray(trip.Leg)) {
+                      fixedTrip.Leg = [trip.Leg]
+                      return fixedTrip
+                    } else {
+                      return fixedTrip
+                    }
+                  })
+                  console.log(tripList.length)
+                  setTripResult(tripList)
+                  console.log(tripResult)
+
+                  setResultsReady(true)
+                  setModalVisible(true)
                 })
-                console.log(tripList.length)
-                setTripResult(tripList)
-                console.log(tripResult)
-
-                setResultsReady(true)
-                setModalVisible(true)
-              })
-          }
-        }}
-      >
-        {({ handleChange, handleSubmit, setFieldValue, values }) => (
-          <View style={styles.border}>
-            <View>
+            }
+          }}
+        >
+          {({ handleChange, handleSubmit, setFieldValue, values }) => (
+            <View style={styles.border}>
               <View>
+                <View>
+                  <TextInput
+                    style={styles.inputField}
+                    onChangeText={(e) => {
+                      setDepartures([])
+                      fetch(
+                        "https://api.vasttrafik.se/bin/rest.exe/v2/location.name?input=" +
+                        values.departure +
+                        "&format=json",
+                        {
+                          method: "GET",
+                          headers: {
+                            Authorization: "Bearer " + token,
+                          },
+                        }
+                      )
+                        .then((response) => response.json())
+                        .then((res) => {
+                          setDepartures(res.LocationList.StopLocation)
+                          for (let i = 0; i < res.length; i++) {
+                            console.log(res[i])
+                          }
+                        })
+                        .catch((err) => console.error("error:", err))
+
+                      handleChange("departure")(e)
+                    }}
+                    value={values.departure}
+                    placeholder="Från:"
+                  />
+                </View>
+              </View>
+
+              <FlatList
+                style={{ maxHeight: "30%" }}
+                data={departures}
+                renderItem={({ item }) => (
+                  <Item
+                    fieldSetter={() => {
+                      setFieldValue("departure", item.name)
+                    }}
+                    item={item}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
+              />
+
+              <View style={styles.border}>
                 <TextInput
                   style={styles.inputField}
                   onChangeText={(e) => {
-                    setDepartures([])
+                    setDestinations([])
+
                     fetch(
                       "https://api.vasttrafik.se/bin/rest.exe/v2/location.name?input=" +
-                        values.departure +
-                        "&format=json",
+                      values.destination +
+                      "&format=json",
                       {
                         method: "GET",
                         headers: {
@@ -276,91 +327,45 @@ export default function TravelPlanner(props) {
                     )
                       .then((response) => response.json())
                       .then((res) => {
-                        setDepartures(res.LocationList.StopLocation)
+                        setDestinations(res.LocationList.StopLocation)
                         for (let i = 0; i < res.length; i++) {
                           console.log(res[i])
                         }
                       })
                       .catch((err) => console.error("error:", err))
 
-                    handleChange("departure")(e)
+                    handleChange("destination")(e)
                   }}
-                  value={values.departure}
-                  placeholder="Från:"
+                  value={values.destination}
+                  placeholder="Till:"
                 />
               </View>
-            </View>
 
-            <FlatList
-              style={{ maxHeight: "30%" }}
-              data={departures}
-              renderItem={({ item }) => (
-                <Item
-                  fieldSetter={() => {
-                    setFieldValue("departure", item.name)
-                  }}
-                  item={item}
-                />
-              )}
-              keyExtractor={(item) => item.id}
-            />
-
-            <View style={styles.border}>
-              <TextInput
-                style={styles.inputField}
-                onChangeText={(e) => {
-                  setDestinations([])
-
-                  fetch(
-                    "https://api.vasttrafik.se/bin/rest.exe/v2/location.name?input=" +
-                      values.destination +
-                      "&format=json",
-                    {
-                      method: "GET",
-                      headers: {
-                        Authorization: "Bearer " + token,
-                      },
-                    }
-                  )
-                    .then((response) => response.json())
-                    .then((res) => {
-                      setDestinations(res.LocationList.StopLocation)
-                      for (let i = 0; i < res.length; i++) {
-                        console.log(res[i])
-                      }
-                    })
-                    .catch((err) => console.error("error:", err))
-
-                  handleChange("destination")(e)
-                }}
-                value={values.destination}
-                placeholder="Till:"
+              <FlatList
+                style={{ maxHeight: "30%" }}
+                data={destinations}
+                renderItem={({ item }) => (
+                  <Item
+                    fieldSetter={() => {
+                      setFieldValue("destination", item.name)
+                    }}
+                    item={item}
+                  />
+                )}
+                keyExtractor={(item) => item.id}
               />
-            </View>
 
-            <FlatList
-              style={{ maxHeight: "30%" }}
-              data={destinations}
-              renderItem={({ item }) => (
-                <Item
-                  fieldSetter={() => {
-                    setFieldValue("destination", item.name)
-                  }}
-                  item={item}
-                />
-              )}
-              keyExtractor={(item) => item.id}
-            />
-
-            <View style={styles.submitButton}>
-              <TouchableOpacity onPress={handleSubmit}>
-                <Text style={{ color: "#FFF", fontSize: 15 }}>Sök resa</Text>
-              </TouchableOpacity>
+              <View style={styles.submitButton}>
+                <TouchableOpacity onPress={handleSubmit}>
+                  <Text style={{ color: "#FFF", fontSize: 15 }}>Sök resa</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-      </Formik>
+          )}
+        </Formik>
+      </View>
     </View>
+
   )
 }
 
@@ -370,7 +375,7 @@ const styles = StyleSheet.create({
     paddingVertical: 50,
     paddingHorizontal: 30,
     borderRadius: 20,
-    width: "65%",
+    width: 325,
   },
   inputField: {
     alignItems: "center",
@@ -428,11 +433,13 @@ const styles = StyleSheet.create({
 
   tableContainer: {
     display: "flex",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#fff",
   },
   tableItems: {
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginHorizontal: 25
+
   },
   tableBorder: {
     borderRadius: 20,

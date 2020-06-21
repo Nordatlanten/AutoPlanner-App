@@ -7,8 +7,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import HomeScreen from './src/Home.js'
-import LoginScreen from './src/Login.js'
-import RegisterScreen from './src/Register.js'
 import ProfileScreen from './src/Profile.js'
 import DepartureBoard from './src/DepartureBoard.js'
 
@@ -18,9 +16,8 @@ const Tab = createBottomTabNavigator()
 function Setup() {
   return (
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Plan a trip" component={HomeScreen} />
+
     </Stack.Navigator>
   )
 }
@@ -38,7 +35,7 @@ export default function App() {
           name="Home"
           component={Setup}
           options={{
-            tabBarLabel: 'Home',
+            tabBarLabel: 'Hem',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="home" color={color} size={size} />
             )
@@ -46,10 +43,10 @@ export default function App() {
         />
 
         <Tab.Screen
-          name="Departure Board"
+          name="Avgångstavla"
           component={DepartureBoard}
           options={{
-            tabBarLabel: 'Departure Board',
+            tabBarLabel: 'Avgångstavla',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="table" color={color} size={size} />
             )
@@ -60,7 +57,7 @@ export default function App() {
           name="Profile"
           component={ProfileScreen}
           options={{
-            tabBarLabel: 'Profile',
+            tabBarLabel: 'Profil',
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="account"

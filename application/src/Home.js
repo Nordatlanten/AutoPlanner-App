@@ -6,6 +6,7 @@ import TravelPlanner from './TravelPlanner'
 export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
+      <Text style={{ color: '#333', textAlign: 'center', fontSize: 24, marginBottom: 10 }}>Reseplaneraren</Text>
       <TravelPlanner />
       <View
         style={{
@@ -14,11 +15,7 @@ export default function Home({ navigation }) {
           width: '65%'
         }}
       >
-        <Button title="Login" onPress={() => navigation.navigate('Login')} />
-        <Button
-          title="Register"
-          onPress={() => navigation.navigate('Register')}
-        />
+
       </View>
     </View>
   )

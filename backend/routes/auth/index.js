@@ -96,7 +96,7 @@ router.post('/register', (req, res, next) => {
     }
     if (!req.body.password || req.body.password.length < 7) {
       return res.status(400).send({
-        msg: 'Ange ett lösenord med minst 6 tecken'
+        msg: 'Ange ett lösenord med minst 7 tecken'
       });
     }
 
@@ -194,41 +194,41 @@ router.post('/forgot', (req, res, next) => {
     const token = uuid.v4();
 
     mysqlConnection.query(`SELECT * FROM users WHERE email = ${mysqlConnection.escape(req.body.email)};`, (err, result) => {
-        if (err) {
-          console.log(err);
-          return res.status(500).send();
-        }
+      if (err) {
+        console.log(err);
+        return res.status(500).send();
+      }
 
-        if (!result.length) {
-          return res.status(200).send({
-            msg: "Vänligen kolla din e-post"
-          });
-        }
-
-        mysqlConnection.query(
-          `UPDATE users SET resetToken = '${token}' WHERE email = ${mysqlConnection.escape(req.body.email)}`
-        );
-
-
-        var mailOptions = {
-          from: 'AutoPlanner <AutoPlanner@aviliax.com>',
-          to: req.body.email,
-          subject: 'Glömt lösenord',
-          html: `<a href="${process.env.HOST}/auth/forgot/${token}">Skapa nytt lösenord</a>`
-        }
-
-        transporter.sendMail(mailOptions, function (error, info) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Forgot email sent: ' + info.response);
-          }
-        });
-
+      if (!result.length) {
         return res.status(200).send({
-          msg: 'Vänligen kolla din e-post',
+          msg: "Vänligen kolla din e-post"
         });
       }
+
+      mysqlConnection.query(
+        `UPDATE users SET resetToken = '${token}' WHERE email = ${mysqlConnection.escape(req.body.email)}`
+      );
+
+
+      var mailOptions = {
+        from: 'AutoPlanner <AutoPlanner@aviliax.com>',
+        to: req.body.email,
+        subject: 'Glömt lösenord',
+        html: `<a href="${process.env.HOST}/auth/forgot/${token}">Skapa nytt lösenord</a>`
+      }
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Forgot email sent: ' + info.response);
+        }
+      });
+
+      return res.status(200).send({
+        msg: 'Vänligen kolla din e-post',
+      });
+    }
     );
 
   } else {
@@ -274,6 +274,62 @@ router.post('/forgot', (req, res, next) => {
   }
 });
 
+router.post('/reset', (req, res, next) => {
 
+  mysqlConnection.query(`SELECT * FROM users WHERE id = ${mysqlConnection.escape(req.body.userId)}`, (err, result) => {
+    if (err) {
+      console.log(err)
+      return res.status(500).send()
+    }
+
+    bcrypt.compare(req.body.oldPass, result[0]['passwordHash'], function (bErr, bResult) {
+      if (bErr) {
+        return res.status(500).send()
+      }
+
+      if (!bResult) {
+        return res.status(400).send({
+          msg: 'Fel lösenord'
+        })
+      }
+
+      if (bResult) {
+        console.log("Jämfört gamla lösenordet");
+
+        if (!req.body.newPass || req.body.newPass.length < 7) {
+          return res.status(400).send({
+            msg: 'Ange ett lösenord med minst 7 tecken'
+          });
+        }
+
+        if (!req.body.repeatedPass || req.body.newPass != req.body.repeatedPass) {
+          return res.status(400).send({
+            msg: 'Lösenorden matchar inte'
+          });
+        }
+
+        bcrypt.hash(req.body.newPass, 10, (cErr, hash) => {
+          if (cErr) {
+            console.log(cErr);
+            return res.status(500).send();
+          }
+
+          mysqlConnection.query(
+            `UPDATE users SET passwordHash = ${mysqlConnection.escape(hash)} WHERE id = ${mysqlConnection.escape(req.body.userId)}`, (dErr, dResult) => {
+              if (dErr) {
+                console.log(dErr);
+                return res.status(500).send();
+              }
+
+              return res.status(200).send({
+                msg: 'Lösenord ändrat!',
+              });
+            }
+          )
+        })
+      }
+    })
+  })
+})
 
 module.exports = router;

@@ -21,5 +21,6 @@ const mysqlConnection = require('./mysql')
 app.use('/auth', require('./routes/auth/'))
 app.use('/vasttrafik', require('./routes/vasttrafik/'))
 app.use('/calendar', require('./routes/calendar/'))
+app.use('/usersettings', require('./routes/usersettings/'))
 
 

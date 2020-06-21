@@ -54,7 +54,7 @@ async function checkAccessToken(accessToken) {
       console.log("False");
     });
 
- 
+
 }
 
 
@@ -104,7 +104,7 @@ router.post('/getDepartures', async function (req, res) {
   today = yyyy + '%2F' + mm + '%2F' + dd;
   return await axios
     .get(
-      `https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard?id=${req.body.id}&date=${today}&time=13%3A00&format=json`,
+      `https://api.vasttrafik.se/bin/rest.exe/v2/departureBoard?id=${req.body.id}&date=${today}&time=13%3A30&format=json`,
       {
         headers: {
           "Authorization": "Bearer " + token
@@ -133,13 +133,12 @@ function calcCrow(lat1, lon1, lat2, lon2) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c;
 
-  return d*1000
+  return d * 1000
 
 }
 
-function toRad(Value) 
-{
-    return Value * Math.PI / 180;
+function toRad(Value) {
+  return Value * Math.PI / 180;
 }
 
 module.exports = router;
